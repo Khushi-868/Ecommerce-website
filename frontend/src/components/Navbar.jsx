@@ -34,7 +34,7 @@ const Navbar = () => {
         {/* LEFT: Logo */}
         <div className="navbar-brand">
           <Link to="/">
-            ShopNest
+            ShopNests
           </Link>
         </div>
 
