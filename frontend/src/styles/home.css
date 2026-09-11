@@ -1,0 +1,356 @@
+/* Home Page Styles */
+
+.home-container {
+  width: 100%;
+}
+
+.section {
+  padding: 80px 24px;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 50px 20px;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.section-header h2 {
+  margin-bottom: 0;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.view-all-link {
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.view-all-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* 1. HERO SECTION */
+.hero-section {
+  position: relative;
+  height: 85vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  background-color: #111;
+  overflow: hidden;
+}
+
+.hero-image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.hero-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 5%;
+  color: #fff;
+}
+
+.hero-content h1 {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1.05;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 40px;
+  color: #e5e5e5;
+  max-width: 500px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+  .hero-buttons {
+    flex-direction: column;
+  }
+}
+
+/* 2. SHOP BY CATEGORY */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.category-card {
+  display: block;
+  text-align: center;
+  group: category;
+}
+
+.category-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--border-color);
+  margin-bottom: 15px;
+}
+
+.category-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.category-card:hover .category-image img {
+  transform: scale(1.05);
+}
+
+.category-name {
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+.category-card:hover .category-name {
+  text-decoration: underline;
+}
+
+/* 3 & 4. PRODUCT GRID */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px 20px;
+}
+
+@media (max-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 10px;
+  }
+}
+
+/* 5. PROMOTIONAL SECTION */
+.promo-section {
+  background-color: var(--text-primary);
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
+  background-image: url('https://images.unsplash.com/photo-1489987707023-afc824781ef1?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.promo-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+
+.promo-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.promo-content h2 {
+  font-size: 3rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.promo-content p {
+  font-size: 1.2rem;
+  color: #ddd;
+  margin-bottom: 30px;
+}
+
+/* 6. TRENDING COLLECTIONS */
+.trending-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.trending-card {
+  position: relative;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+  background-color: var(--border-color);
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.trending-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  transition: background 0.3s ease;
+}
+
+.trending-card:hover::before {
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+.trending-card.oversized { background-image: url('https://images.unsplash.com/photo-1616428646197-2bb80b0805ad?auto=format&fit=crop&w=800&q=80'); }
+.trending-card.streetwear { background-image: url('https://images.unsplash.com/photo-1512353087810-254cb3617d12?auto=format&fit=crop&w=800&q=80'); }
+.trending-card.essentials { background-image: url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80'); }
+
+.trending-card h3 {
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.trending-card span {
+  color: #fff;
+  position: relative;
+  z-index: 2;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.trending-card span::after {
+  content: ' →';
+  transition: margin-left 0.2s ease;
+}
+
+.trending-card:hover span::after {
+  margin-left: 5px;
+}
+
+@media (max-width: 900px) {
+  .trending-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 7. WHY SHOP WITH US */
+.trust-section {
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  text-align: center;
+}
+
+.trust-card {
+  padding: 20px;
+}
+
+.trust-icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+.trust-card h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.trust-card p {
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 8. NEWSLETTER */
+.newsletter-section {
+  padding: 100px 20px;
+  text-align: center;
+  background-color: var(--bg-color);
+}
+
+.newsletter-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.newsletter-content h2 {
+  font-size: 2.5rem;
+}
+
+.newsletter-form {
+  display: flex;
+  margin-top: 30px;
+  gap: 10px;
+}
+
+.newsletter-form input {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .newsletter-form {
+    flex-direction: column;
+  }
+}

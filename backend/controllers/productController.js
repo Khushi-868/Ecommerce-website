@@ -3,7 +3,15 @@ const cloudinary = require('../config/cloudinary');
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const { category, collection, featured } = req.query;
+    const filter = {};
+
+    if (category) filter.category = category;
+    if (featured === 'true') filter.isFeatured = true;
+    if (collection === 'new-arrivals') filter.isNewArrival = true;
+    if (collection === 'best-sellers') filter.isBestSeller = true;
+
+    const products = await Product.find(filter);
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

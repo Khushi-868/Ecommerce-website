@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import '../styles/admin.css';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -10,12 +11,19 @@ const EditProduct = () => {
   const [formData, setFormData] = useState({ name: '', description: '', price: '', category: '', stock: '' });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const res = await fetch(`/api/products/${id}`);
-      const data = await res.json();
-      setFormData({ name: data.name, description: data.description, price: data.price, category: data.category, stock: data.stock });
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        const data = await res.json();
+        setFormData({ name: data.name, description: data.description, price: data.price, category: data.category, stock: data.stock });
+      } catch (error) {
+        console.error("Failed to fetch product", error);
+      } finally {
+        setFetching(false);
+      }
     };
     fetchProduct();
   }, [id]);
@@ -31,38 +39,112 @@ const EditProduct = () => {
     data.append('stock', formData.stock);
     if (image) data.append('image', image);
 
-    const res = await fetch(`/api/products/${id}`, {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${user.token}` },
-      body: data
-    });
-    setLoading(false);
-    if (res.ok) {
-      alert('Product updated successfully!');
-      navigate('/admin/products');
+    try {
+      const res = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${user.token}` },
+        body: data
+      });
+      if (res.ok) {
+        alert('Product updated successfully!');
+        navigate('/admin/products');
+      } else {
+        alert('Failed to update product');
+      }
+    } catch (error) {
+       console.error("Update failed", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (fetching) return <div className="admin-page container"><div className="admin-loading">Loading product data...</div></div>;
+
   return (
-    <div style={{ maxWidth: '600px', margin: '40px auto', background: '#18181b', padding: '40px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-      <h2 style={{ color: '#f97316', marginBottom: '20px' }}>Edit Product</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <input type="text" placeholder="Product Name" required value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} style={inputStyle} />
-        <textarea placeholder="Description" required rows="4" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} style={inputStyle} />
-        <input type="number" placeholder="Price" required value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})} style={inputStyle} />
-        <input type="text" placeholder="Category" required value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})} style={inputStyle} />
-        <input type="number" placeholder="Stock" required value={formData.stock} onChange={(e) => setFormData({...formData, stock: e.target.value})} style={inputStyle} />
-        <div style={{ padding: '15px', border: '1px dashed #f97316', borderRadius: '8px' }}>
-          <label style={{ display: 'block', marginBottom: '10px', color: '#a1a1aa' }}>Replace Image (Optional)</label>
-          <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} style={{ color: '#fff' }} />
+    <div className="admin-page container">
+      
+      <div className="admin-header">
+        <div>
+          <h1>Edit Product</h1>
+          <p>Update product information.</p>
         </div>
-        <button type="submit" disabled={loading} className="btn" style={{ marginTop: '10px' }}>
-          {loading ? 'Updating...' : 'Update Product'}
-        </button>
-      </form>
+        <Link to="/admin/products" className="btn btn-secondary">Back to Products</Link>
+      </div>
+
+      <div className="admin-form-container">
+        <h2>Product Details</h2>
+        
+        <form onSubmit={handleSubmit} className="admin-form">
+          <div className="admin-input-group">
+            <label>Product Name</label>
+            <input 
+              type="text" 
+              className="admin-input" 
+              required 
+              value={formData.name} 
+              onChange={(e) => setFormData({...formData, name: e.target.value})} 
+            />
+          </div>
+          
+          <div className="admin-input-group">
+            <label>Description</label>
+            <textarea 
+              className="admin-input admin-textarea" 
+              required 
+              value={formData.description} 
+              onChange={(e) => setFormData({...formData, description: e.target.value})} 
+            />
+          </div>
+          
+          <div className="admin-input-group">
+            <label>Price (₹)</label>
+            <input 
+              type="number" 
+              className="admin-input" 
+              required 
+              value={formData.price} 
+              onChange={(e) => setFormData({...formData, price: e.target.value})} 
+            />
+          </div>
+          
+          <div className="admin-input-group">
+            <label>Category</label>
+            <input 
+              type="text" 
+              className="admin-input" 
+              required 
+              value={formData.category} 
+              onChange={(e) => setFormData({...formData, category: e.target.value})} 
+            />
+          </div>
+          
+          <div className="admin-input-group">
+            <label>Stock Quantity</label>
+            <input 
+              type="number" 
+              className="admin-input" 
+              required 
+              value={formData.stock} 
+              onChange={(e) => setFormData({...formData, stock: e.target.value})} 
+            />
+          </div>
+          
+          <div className="admin-file-upload">
+            <label>Replace Image (Optional)</label>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={(e) => setImage(e.target.files[0])} 
+            />
+          </div>
+
+          <button type="submit" disabled={loading} className="btn admin-submit-btn">
+            {loading ? 'UPDATING...' : 'UPDATE PRODUCT'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
-const inputStyle = { padding: '12px', background: '#09090b', border: '1px solid #27272a', borderRadius: '6px', color: '#fff', fontSize: '15px', outline: 'none' };
 export default EditProduct;

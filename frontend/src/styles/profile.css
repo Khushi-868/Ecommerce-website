@@ -1,0 +1,239 @@
+.profile-page {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.profile-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.profile-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.profile-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--text-primary);
+  color: var(--bg-secondary);
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+}
+
+.profile-card h2 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.profile-email {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.role-badge {
+  display: inline-block;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
+.profile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.profile-nav-link {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.profile-nav-link:hover {
+  background: var(--bg-color);
+}
+
+.profile-nav-link.active {
+  background: var(--text-primary);
+  color: var(--bg-secondary);
+}
+
+.profile-nav-link.text-danger {
+  color: var(--error-color);
+  margin-top: 15px;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0;
+  padding-top: 20px;
+}
+
+/* Main Content */
+.profile-main {
+  flex-grow: 1;
+}
+
+.profile-main-header {
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.profile-main-header h2 {
+  font-size: 24px;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.profile-loading {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.profile-empty {
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.profile-empty svg {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.profile-empty h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.profile-empty p {
+  color: var(--text-secondary);
+  margin-bottom: 25px;
+}
+
+/* Orders List */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.order-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.order-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.status-delivered {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.status-shipped {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.status-processing, .status-pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.order-footer {
+  padding: 15px 20px;
+  background: var(--bg-secondary);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .profile-layout {
+    flex-direction: column;
+  }
+  
+  .profile-sidebar {
+    width: 100%;
+  }
+  
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

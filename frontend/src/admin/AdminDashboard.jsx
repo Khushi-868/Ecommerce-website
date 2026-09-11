@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import '../styles/admin.css';
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
@@ -29,68 +31,69 @@ const AdminDashboard = () => {
         }
       } catch (error) {
         console.error(error);
+        setStats({ totalOrders: 0, totalProducts: 0, totalUsers: 0, totalRevenue: 0 });
+      } finally {
+        setLoading(false);
       }
     };
     fetchStats();
   }, [user, navigate]);
 
-  const cardStyle = {
-    padding: '25px',
-    background: '#18181b',
-    border: '1px solid rgba(255, 255, 255, 0.05)',
-    borderRadius: '12px',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '10px'
-  };
-
-  const numberStyle = {
-    fontSize: '2.5rem',
-    fontWeight: '700',
-    color: '#f97316'
-  };
-
   return (
-    <div style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '5px' }}>
-        <img src="/ShopNestLogo.png" alt="Logo" style={{ height: '40px', width: '40px', borderRadius: '8px', objectFit: 'cover', filter: 'drop-shadow(0 0px 10px rgba(249, 115, 22, 0.3))' }} />
-        <h2 style={{ margin: 0 }}>Admin Dashboard</h2>
-      </div>
-      <p style={{ color: '#a1a1aa', marginBottom: '30px', fontSize: '1.1rem' }}>Welcome back, <span style={{color: '#fff'}}>{user?.name}</span></p>
+    <div className="admin-page container">
       
-      {stats ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-          <div style={cardStyle}>
-            <h4 style={{ color: '#a1a1aa', fontSize: '1rem' }}>Total Orders</h4>
-            <div style={numberStyle}>{stats.totalOrders}</div>
-          </div>
-          <div style={cardStyle}>
-            <h4 style={{ color: '#a1a1aa', fontSize: '1rem' }}>Total Products</h4>
-            <div style={numberStyle}>{stats.totalProducts}</div>
-          </div>
-          <div style={cardStyle}>
-            <h4 style={{ color: '#a1a1aa', fontSize: '1rem' }}>Total Users</h4>
-            <div style={numberStyle}>{stats.totalUsers}</div>
-          </div>
-          <div style={cardStyle}>
-            <h4 style={{ color: '#a1a1aa', fontSize: '1rem' }}>Total Revenue</h4>
-            <div style={numberStyle}>₹{stats.totalRevenue.toFixed(2)}</div>
+      <div className="admin-header">
+        <div className="admin-brand">
+          <img src="/ShopNestLogo.png" alt="ShopNest" />
+          <div>
+            <h1>Admin Dashboard</h1>
+            <p>Welcome back, {user?.name}</p>
           </div>
         </div>
+      </div>
+
+      {loading ? (
+        <div className="admin-loading">Loading metrics...</div>
       ) : (
-        <div style={{ textAlign: 'center', margin: '50px 0', color: '#f97316' }}>Loading metrics...</div>
+        <div className="admin-stats-grid">
+          <div className="admin-stat-card">
+            <h3>Total Revenue</h3>
+            <div className="admin-stat-value">₹{stats?.totalRevenue?.toFixed(2) || '0.00'}</div>
+          </div>
+          <div className="admin-stat-card">
+            <h3>Total Orders</h3>
+            <div className="admin-stat-value">{stats?.totalOrders || 0}</div>
+          </div>
+          <div className="admin-stat-card">
+            <h3>Total Products</h3>
+            <div className="admin-stat-value">{stats?.totalProducts || 0}</div>
+          </div>
+          <div className="admin-stat-card">
+            <h3>Total Users</h3>
+            <div className="admin-stat-value">{stats?.totalUsers || 0}</div>
+          </div>
+        </div>
       )}
 
-      <div style={{ marginTop: '40px', padding: '30px', background: '#18181b', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-        <h3 style={{ marginBottom: '25px', color: '#f97316' }}>Administrative Controls</h3>
-        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          <button className="btn" onClick={() => navigate('/admin/add-product')}>+ Add Product</button>
-          <button className="btn" onClick={() => navigate('/admin/products')} style={{ background: '#3f3f46' }}>📦 Manage Products</button>
-          <button className="btn" onClick={() => navigate('/admin/orders')} style={{ background: '#3f3f46' }}>🚚 Manage Orders</button>
-          <button className="btn" onClick={() => navigate('/admin/users')} style={{ background: '#3f3f46' }}>👥 Users Directory</button>
+      <div className="admin-controls-section">
+        <h2>Quick Actions</h2>
+        <div className="admin-controls-grid">
+          <button className="admin-control-btn" onClick={() => navigate('/admin/add-product')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add New Product
+          </button>
+          <button className="admin-control-btn" onClick={() => navigate('/admin/products')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            Manage Products
+          </button>
+          <button className="admin-control-btn" onClick={() => navigate('/admin/orders')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            Manage Orders
+          </button>
+          <button className="admin-control-btn" onClick={() => navigate('/admin/users')}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            User Directory
+          </button>
         </div>
       </div>
     </div>

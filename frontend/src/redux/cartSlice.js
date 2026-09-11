@@ -10,18 +10,39 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const item = action.payload;
-      const existItem = state.cartItems.find((x) => x.productId === item.productId);
+      
+      // Ensure we use a unique ID based on product, size, and color
+      const cartItemId = item.cartItemId || `${item.productId}-${item.size || 'nosize'}-${item.color || 'nocolor'}`;
+      item.cartItemId = cartItemId;
+
+      const existItem = state.cartItems.find((x) => x.cartItemId === cartItemId);
       if (existItem) {
-        state.cartItems = state.cartItems.map((x) =>
-          x.productId === existItem.productId ? item : x
-        );
+        // If it exists and we're just adding more from product page/card, we add the quantities.
+        // If it's an absolute set from the cart page (e.g. qty: 3), we need a flag or we can just replace.
+        // For simplicity, if we pass `absoluteQty: true`, we replace, otherwise we add.
+        if (item.absoluteQty) {
+          existItem.qty = item.qty;
+        } else {
+          existItem.qty += item.qty;
+        }
+        
+        // Cap at stock limit
+        if (existItem.qty > item.stock) {
+          existItem.qty = item.stock;
+        }
       } else {
+        // New item
+        // Ensure initial quantity doesn't exceed stock
+        if (item.qty > item.stock) {
+          item.qty = item.stock;
+        }
         state.cartItems.push(item);
       }
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     removeFromCart: (state, action) => {
-      state.cartItems = state.cartItems.filter((x) => x.productId !== action.payload);
+      // payload should be the cartItemId now
+      state.cartItems = state.cartItems.filter((x) => x.cartItemId !== action.payload);
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
     clearCart: (state) => {

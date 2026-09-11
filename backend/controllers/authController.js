@@ -54,19 +54,26 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const trimmedEmail = email ? email.trim().toLowerCase() : '';
+    
+    console.log(`[LOGIN ATTEMPT] Email: "${trimmedEmail}", Password length: ${password?.length}`);
+    const user = await User.findOne({ email: trimmedEmail });
+    console.log(`[LOGIN ATTEMPT] User found: ${!!user}`);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id)
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      console.log(`[LOGIN ATTEMPT] Password match: ${isMatch}`);
+      if (isMatch) {
+        return res.json({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          token: generateToken(user._id)
+        });
+      }
     }
+    res.status(401).json({ message: 'Invalid email or password' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
